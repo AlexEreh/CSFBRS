@@ -8,10 +8,9 @@ import com.alexereh.database.room.entities.DBPersonData
 
 @Dao
 interface PersonDataDao {
-    @Query("SELECT * FROM PersonData WHERE login = :login AND password = :password")
+    @Query("SELECT * FROM PersonData WHERE login = :login")
     fun getPerson(
-        login: String,
-        password: String
+        login: String
     ): DBPersonData
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -12,7 +12,6 @@ import com.alexereh.model.PersonData
 )
 data class DBPersonData(
     @PrimaryKey @ColumnInfo("login") val login: String,
-    @ColumnInfo("password") val password: String,
     @ColumnInfo("first_name") val firstName: String,
     @ColumnInfo("last_name") val lastName: String,
     @ColumnInfo("patronymic") val patronymic: String,
@@ -26,12 +25,10 @@ data class DBPersonData(
         fun fromDomainModel(
             personData: PersonData,
             login: String,
-            password: String
         ): DBPersonData {
             return with(personData) {
                 DBPersonData(
                     login = login,
-                    password = password,
                     firstName = firstName,
                     lastName = lastName,
                     patronymic = patronymic,

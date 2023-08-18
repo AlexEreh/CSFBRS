@@ -20,7 +20,7 @@ class GradesRepositoryImpl(
         return flow {
             emit(Result.Loading)
             if (!isNetworkAvailable(context)) {
-                emit(databaseDataSource.getPerson(login, password))
+                emit(databaseDataSource.getPerson(login))
             } else {
                 when (val networkPerson = networkDataSource.getPerson(login, password)) {
                     is Result.Error -> {
@@ -36,8 +36,7 @@ class GradesRepositoryImpl(
                     is Result.Success -> {
                         databaseDataSource.insertPerson(
                             personData = networkPerson.data,
-                            login = login,
-                            password = password
+                            login = login
                         )
                         emit(networkPerson)
                     }
@@ -50,7 +49,7 @@ class GradesRepositoryImpl(
         return flow {
             emit(Result.Loading)
             if (!isNetworkAvailable(context)) {
-                emit(databaseDataSource.getGrades(login, password))
+                emit(databaseDataSource.getGrades(login))
             } else {
                 when (val networkPerson = networkDataSource.getPerson(login, password)) {
                     !is Result.Success -> {
@@ -60,8 +59,7 @@ class GradesRepositoryImpl(
                     else -> {
                         databaseDataSource.insertPerson(
                             personData = networkPerson.data,
-                            login = login,
-                            password = password
+                            login = login
                         )
                     }
                 }
@@ -74,8 +72,7 @@ class GradesRepositoryImpl(
 
                         databaseDataSource.insertGrades(
                             rows = networkGrades.data,
-                            login = login,
-                            password = password
+                            login = login
                         )
                         emit(networkGrades)
                     }
