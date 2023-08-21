@@ -3,7 +3,7 @@ package com.alexereh.stats.ui
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexereh.stats.FakeStatsComponent
+import com.alexereh.stats.component.FakeStatsComponent
 import com.alexereh.ui.theme.CSFBRSTheme
 
 @Preview(showSystemUi = false, device = "id:pixel_tablet", name = "Tablet Light", group = "Tablet")

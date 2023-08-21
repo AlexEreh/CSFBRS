@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.alexereh.csfbrs.root.DefaultRootComponent
 import com.alexereh.csfbrs.root.RootContent
 import com.alexereh.ui.theme.CSFBRSTheme
@@ -13,11 +14,16 @@ import com.arkivanov.decompose.defaultComponentContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
         val root = DefaultRootComponent(
             componentContext = defaultComponentContext()
         )
+
+        splashScreen.setKeepOnScreenCondition {
+            root.showSplashScreen.value
+        }
 
         setContent {
             CSFBRSTheme {

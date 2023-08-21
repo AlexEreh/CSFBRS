@@ -1,42 +1,27 @@
-package com.alexereh.profile
+package com.alexereh.profile.component
 
 import android.util.Log
 import com.alexereh.datastore.UserDataSource
 import com.alexereh.grades.GradesRepository
 import com.alexereh.model.PersonData
+import com.alexereh.ui.util.BaseComponent
 import com.alexereh.util.Result
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.arkivanov.essenty.lifecycle.doOnCreate
-import com.arkivanov.essenty.lifecycle.doOnDestroy
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlin.coroutines.CoroutineContext
-
-fun LifecycleOwner.coroutineScope(context: CoroutineContext): CoroutineScope {
-    val scope = CoroutineScope(context)
-    lifecycle.doOnDestroy(scope::cancel)
-
-    return scope
-}
 
 class RealProfileComponent(
     private val onBackAction: () -> Unit,
     private val onLogOut: () -> Unit,
     componentContext: ComponentContext
-) : ProfileComponent, KoinComponent,
+) : ProfileComponent, KoinComponent, BaseComponent(componentContext),
     ComponentContext by componentContext {
-
-    // The scope is automatically cancelled when the component is destroyed
-    private val scope = coroutineScope(Dispatchers.IO)
 
     private val gradesRepository: GradesRepository by inject()
     private val dataSource: UserDataSource by inject()
@@ -50,10 +35,12 @@ class RealProfileComponent(
     }
 
     override fun doLogoutAction() {
-        runBlocking(Dispatchers.IO) {
+        ioScope.launch {
             dataSource.setLoggedIn(false)
+            mainScope.launch {
+                onLogOut()
+            }
         }
-        onLogOut()
     }
 
     override fun refreshProfile() {
@@ -63,7 +50,7 @@ class RealProfileComponent(
                 Log.e("Coroutine", "$it")
                 _personData.value = it
             }
-            .launchIn(scope)
+            .launchIn(ioScope)
     }
 
     init {

@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.coil.kt)
 
+    implementation(libs.androidx.core.splashscreen)
+
     implementation(project(mapOf("path" to ":feature:profile")))
     implementation(project(mapOf("path" to ":feature:stats")))
     implementation(project(mapOf("path" to ":feature:login")))

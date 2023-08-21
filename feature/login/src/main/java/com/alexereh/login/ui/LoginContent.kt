@@ -1,4 +1,4 @@
-package com.alexereh.login
+package com.alexereh.login.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +36,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alexereh.login.component.FakeLoginComponent
+import com.alexereh.login.component.LoginComponent
 import com.alexereh.ui.theme.CSFBRSTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -96,7 +98,8 @@ fun LoginContent(
                 label = {
                     Text(text = "Логин")
                 },
-                shape = CircleShape
+                shape = CircleShape,
+                singleLine = true
             )
             OutlinedTextField(
                 value = password,
@@ -121,8 +124,13 @@ fun LoginContent(
                         )
                     }
                 },
-                keyboardActions = KeyboardActions(),
-                shape = CircleShape
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        doLogin()
+                    }
+                ),
+                shape = CircleShape,
+                singleLine = true
             )
             Button(
                 onClick = doLogin,

@@ -1,4 +1,4 @@
-package com.alexereh.profile
+package com.alexereh.profile.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack

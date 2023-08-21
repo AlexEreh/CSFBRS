@@ -1,4 +1,4 @@
-package com.alexereh.stats
+package com.alexereh.stats.component
 
 import com.alexereh.model.StatisticRow
 import com.alexereh.util.Result

@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexereh.model.StatisticRow
-import com.alexereh.stats.StatsComponent
+import com.alexereh.stats.component.StatsComponent
 import com.alexereh.stats.ui.stat.DisciplineStat
 import com.alexereh.util.Result
 import com.google.accompanist.systemuicontroller.rememberSystemUiController

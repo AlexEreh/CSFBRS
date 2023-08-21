@@ -3,12 +3,13 @@ package com.alexereh.csfbrs.root
 import com.alexereh.csfbrs.root.RootComponent.Child.LoginChild
 import com.alexereh.csfbrs.root.RootComponent.Child.ProfileChild
 import com.alexereh.csfbrs.root.RootComponent.Child.StatsChild
-import com.alexereh.login.LoginComponent
-import com.alexereh.login.RealLoginComponent
-import com.alexereh.profile.ProfileComponent
-import com.alexereh.profile.RealProfileComponent
-import com.alexereh.stats.RealStatsComponent
-import com.alexereh.stats.StatsComponent
+import com.alexereh.login.component.LoginComponent
+import com.alexereh.login.component.RealLoginComponent
+import com.alexereh.profile.component.ProfileComponent
+import com.alexereh.profile.component.RealProfileComponent
+import com.alexereh.stats.component.RealStatsComponent
+import com.alexereh.stats.component.StatsComponent
+import com.alexereh.ui.util.BaseComponent
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -18,10 +19,14 @@ import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class DefaultRootComponent(
     componentContext: ComponentContext,
-) : RootComponent, ComponentContext by componentContext{
+) : RootComponent, BaseComponent(componentContext),
+    ComponentContext by componentContext {
     private val navigation = StackNavigation<Config>()
 
     private val _stack: Value<ChildStack<Config, RootComponent.Child>>
@@ -34,14 +39,20 @@ class DefaultRootComponent(
 
     override val stack: Value<ChildStack<*, RootComponent.Child>> = _stack
 
+    private val _showSplashScreen = MutableStateFlow(true)
+    override val showSplashScreen: StateFlow<Boolean>
+        get() = _showSplashScreen
+
     private fun child(config: Config, componentContext: ComponentContext): RootComponent.Child {
         return when (config) {
             is Config.Stats -> StatsChild(
                 statsComponent(componentContext)
             )
+
             is Config.Login -> LoginChild(
                 loginComponent(componentContext)
             )
+
             is Config.Profile -> ProfileChild(
                 profileComponent(componentContext)
             )
@@ -63,6 +74,11 @@ class DefaultRootComponent(
             componentContext = componentContext,
             onLogin = {
                 navigation.replaceCurrent(Config.Stats)
+            },
+            onCheckStorage = { loggined ->
+                mainScope.launch {
+                    _showSplashScreen.value = loggined
+                }
             }
         )
     }

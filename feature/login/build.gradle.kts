@@ -58,6 +58,8 @@ dependencies {
     implementation(project(mapOf("path" to ":common:model")))
     implementation(project(mapOf("path" to ":data:grades")))
     implementation(project(mapOf("path" to ":common:datastore")))
+    implementation(project(":common:util"))
+    implementation(project(":common:util"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)

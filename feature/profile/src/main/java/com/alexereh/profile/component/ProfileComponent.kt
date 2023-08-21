@@ -1,4 +1,4 @@
-package com.alexereh.profile
+package com.alexereh.profile.component
 
 import com.alexereh.model.PersonData
 import com.alexereh.util.Result

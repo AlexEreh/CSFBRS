@@ -1,4 +1,4 @@
-package com.alexereh.login
+package com.alexereh.login.component
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,5 +23,8 @@ class FakeLoginComponent() : LoginComponent {
     }
 
     override fun doLogin() {
+    }
+
+    override fun signalizeError() {
     }
 }

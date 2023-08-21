@@ -1,4 +1,4 @@
-package com.alexereh.profile
+package com.alexereh.profile.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexereh.model.PersonData
+import com.alexereh.profile.component.FakeProfileComponent
+import com.alexereh.profile.component.ProfileComponent
 import com.alexereh.ui.theme.CSFBRSTheme
 import com.alexereh.util.Result
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
