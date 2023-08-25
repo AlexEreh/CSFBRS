@@ -48,7 +48,7 @@ dependencies {
     api(libs.reaktive.reaktiveTesting)
     api(libs.reaktive.coroutinesInterop)
 
-    api("com.google.accompanist:accompanist-systemuicontroller:0.33.0-alpha")
+    api("com.google.accompanist:accompanist-systemuicontroller:0.33.1-alpha")
 
     api(platform(libs.compose.bom))
     api(libs.material3)
