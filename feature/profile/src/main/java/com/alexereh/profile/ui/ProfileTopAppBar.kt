@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileTopAppBar(
-    modifier: Modifier = Modifier,
     onBackAction: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,

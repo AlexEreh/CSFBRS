@@ -1,6 +1,5 @@
 package com.alexereh.login.ui
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -8,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -17,12 +16,10 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,7 +36,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexereh.login.component.FakeLoginComponent
 import com.alexereh.login.component.LoginComponent
 import com.alexereh.ui.theme.CSFBRSTheme
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun LoginContent(component: LoginComponent) {
@@ -65,22 +61,6 @@ fun LoginContent(
     doLogin: () -> Unit
 ) {
     val showPassword = remember { mutableStateOf(false) }
-    // Remember a SystemUiController
-    val systemUiController = rememberSystemUiController()
-    val useDarkIcons = !isSystemInDarkTheme()
-    val surfaceColor = MaterialTheme.colorScheme.surface
-    DisposableEffect(systemUiController, useDarkIcons) {
-        // Update all of the system bar colors to be transparent, and use
-        // dark icons if we're in light theme
-        systemUiController.setSystemBarsColor(
-            color = surfaceColor,
-            darkIcons = useDarkIcons
-        )
-
-        // setStatusBarColor() and setNavigationBarColor() also exist
-
-        onDispose {}
-    }
     Surface(
         modifier = modifier
     ) {
@@ -98,7 +78,7 @@ fun LoginContent(
                 label = {
                     Text(text = "Логин")
                 },
-                shape = CircleShape,
+                shape = RoundedCornerShape(12.dp),
                 singleLine = true
             )
             OutlinedTextField(
@@ -129,12 +109,13 @@ fun LoginContent(
                         doLogin()
                     }
                 ),
-                shape = CircleShape,
+                shape = RoundedCornerShape(12.dp),
                 singleLine = true
             )
             Button(
                 onClick = doLogin,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
                     text = "Войти",

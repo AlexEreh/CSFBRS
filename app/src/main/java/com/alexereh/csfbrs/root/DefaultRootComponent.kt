@@ -75,9 +75,9 @@ class DefaultRootComponent(
             onLogin = {
                 navigation.replaceCurrent(Config.Stats)
             },
-            onCheckStorage = { loggined ->
+            onCheckStorage = {
                 mainScope.launch {
-                    _showSplashScreen.value = loggined
+                    _showSplashScreen.value = false
                 }
             }
         )

@@ -13,6 +13,8 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,7 +43,8 @@ val SCORE_COLUMN_PADDING: PaddingValues = PaddingValues(
 )
 
 @Composable
-fun DisciplineStat(modifier: Modifier = Modifier, subject: StatisticRow) {
+fun DisciplineStat(modifier: Modifier = Modifier, subjectState: State<StatisticRow>) {
+    val subject by subjectState
     DisciplineStat(
         modifier = modifier,
         disciplineName = subject.disciplineName,
@@ -81,7 +84,11 @@ fun DisciplineStat(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
-        Divider(thickness = Dp.Hairline, color = MaterialTheme.colorScheme.outline, modifier = Modifier.fillMaxWidth())
+        Divider(
+            thickness = Dp.Hairline,
+            color = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.fillMaxWidth()
+        )
         ScoreRow(
             modifier = Modifier
                 .fillMaxWidth()

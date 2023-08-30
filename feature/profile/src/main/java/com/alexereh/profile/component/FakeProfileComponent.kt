@@ -1,14 +1,14 @@
 package com.alexereh.profile.component
 
 import com.alexereh.model.PersonData
-import com.alexereh.util.Result
+import com.alexereh.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class FakeProfileComponent : ProfileComponent {
-    override val personData: StateFlow<Result<PersonData>>
+    override val personData: StateFlow<Resource<PersonData>>
         get() = MutableStateFlow(
-            Result.Loading
+            Resource.Success(PersonData.getStub())
         )
 
     override fun doBackAction() {

@@ -5,7 +5,7 @@ import com.alexereh.datastore.UserDataSource
 import com.alexereh.grades.GradesRepository
 import com.alexereh.model.PersonData
 import com.alexereh.ui.util.BaseComponent
-import com.alexereh.util.Result
+import com.alexereh.util.Resource
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,8 +26,8 @@ class RealProfileComponent(
     private val gradesRepository: GradesRepository by inject()
     private val dataSource: UserDataSource by inject()
 
-    private val _personData: MutableStateFlow<Result<PersonData>> = MutableStateFlow(Result.Loading)
-    override val personData: StateFlow<Result<PersonData>>
+    private val _personData: MutableStateFlow<Resource<PersonData>> = MutableStateFlow(Resource.Loading)
+    override val personData: StateFlow<Resource<PersonData>>
         get() = _personData
 
     override fun doBackAction() {

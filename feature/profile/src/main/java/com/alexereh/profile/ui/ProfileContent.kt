@@ -1,6 +1,5 @@
 package com.alexereh.profile.ui
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -9,130 +8,103 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.alexereh.model.PersonData
 import com.alexereh.profile.component.FakeProfileComponent
 import com.alexereh.profile.component.ProfileComponent
 import com.alexereh.ui.theme.CSFBRSTheme
-import com.alexereh.util.Result
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.alexereh.util.Resource
 
 @Composable
 fun ProfileContent(component: ProfileComponent) {
-    val personData = component.personData.collectAsState()
-    ProfileContent(
-        modifier = Modifier.fillMaxSize(),
-        backAction = component::doBackAction,
-        logoutAction = component::doLogoutAction,
-        result = personData.value
-    )
-}
-
-@Composable
-fun ProfileContent(
-    result: Result<PersonData>,
-    modifier: Modifier = Modifier,
-    backAction: () -> Unit,
-    logoutAction: () -> Unit
-) {
-    // Remember a SystemUiController
-    val systemUiController = rememberSystemUiController()
-    val useDarkIcons = !isSystemInDarkTheme()
-    val surfaceColor = MaterialTheme.colorScheme.surface
-    DisposableEffect(systemUiController, useDarkIcons) {
-        // Update all of the system bar colors to be transparent, and use
-        // dark icons if we're in light theme
-        systemUiController.setSystemBarsColor(
-            color = surfaceColor,
-            darkIcons = useDarkIcons
-        )
-
-        // setStatusBarColor() and setNavigationBarColor() also exist
-
-        onDispose {}
-    }
-
+    val personData by component.personData.collectAsState()
     Scaffold (
         topBar = {
-            ProfileTopAppBar {
-                backAction()
-            }
+            ProfileTopAppBar(
+                onBackAction = component::doBackAction
+            )
         }
     ){ scaffoldPadding ->
-        Surface(
-            modifier = modifier
-                .padding(scaffoldPadding)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier
                 .fillMaxSize()
+                .padding(scaffoldPadding)
+                .width(IntrinsicSize.Max)
+                .height(IntrinsicSize.Max)
+                .padding(10.dp)
         ) {
-
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
-                    .fillMaxSize()
-                    .width(IntrinsicSize.Max)
                     .height(IntrinsicSize.Max)
-                    .padding(10.dp)
+                    .weight(1f, true)
             ) {
-                Column(
-                    modifier = Modifier.height(IntrinsicSize.Max).weight(1f, true)
-                ) {
-                    when (result) {
-                        is Result.Loading -> {
-                            LoadingView(modifier = modifier.fillMaxSize())
-                        }
-                        is Result.Success -> {
-                            OutlinedCard(
+                when (personData) {
+                    is Resource.Loading -> {
+                        LoadingView(modifier = Modifier.fillMaxSize())
+                    }
+                    is Resource.Success -> {
+                        OutlinedCard(
+                            modifier = Modifier
+                            //.wrapContentSize(Alignment.Center)
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
                                 modifier = Modifier
-                                    //.wrapContentSize(Alignment.Center)
+                                    .width(IntrinsicSize.Max)
+                                    .height(IntrinsicSize.Max)
                             ) {
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier
-                                        .width(IntrinsicSize.Max)
-                                        .height(IntrinsicSize.Max)
-                                ) {
-                                    PersonDataCardContent(personData = result.data)
+                                val personDataState = remember {
+                                    mutableStateOf((personData as Resource.Success<PersonData>).data)
                                 }
+                                PersonDataCardContent(
+                                    personDataState = personDataState
+                                )
                             }
                         }
-                        is Result.NotLoading -> {
+                    }
+                    is Resource.NotLoading -> {
 
-                        }
-                        is Result.Error -> {
-                            Text(result.exception?.localizedMessage ?: "No message error")
-                        }
+                    }
+                    is Resource.Error -> {
+                        Text((personData as Resource.Error).exception?.localizedMessage ?: "No message error")
                     }
                 }
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Button(
-                        onClick = logoutAction,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "Выйти из аккаунта"
-                        )
-                    }
-                }
-
             }
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Button(
+                    onClick = component::doLogoutAction,
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text(
+                        text = "Выйти из аккаунта",
+                        fontSize = 20.sp
+                    )
+                }
+            }
+
         }
     }
 }
@@ -153,8 +125,9 @@ fun LoadingView(
 @Composable
 fun PersonDataCardContent(
     modifier: Modifier = Modifier,
-    personData: PersonData
+    personDataState: State<PersonData>
 ) {
+    val personData by personDataState
     Column(
         modifier = modifier.padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),

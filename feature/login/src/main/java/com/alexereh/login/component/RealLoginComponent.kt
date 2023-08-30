@@ -8,7 +8,7 @@ import com.alexereh.datastore.UserDataSource
 import com.alexereh.datastore.userData
 import com.alexereh.grades.GradesRepository
 import com.alexereh.ui.util.BaseComponent
-import com.alexereh.util.Result
+import com.alexereh.util.Resource
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,11 +51,11 @@ class RealLoginComponent(
     override fun doLogin() {
         ioScope.launch {
             val person = gradesRepository.getPersonData(_loginText.value, _passwordText.value)
-                .filterNot { it is Result.Loading || it is Result.NotLoading }
+                .filterNot { it is Resource.Loading || it is Resource.NotLoading }
                 .first()
-            if (person is Result.Error) {
+            if (person is Resource.Error) {
                 signalizeError()
-            } else if (person is Result.Success) {
+            } else if (person is Resource.Success) {
                 val userData = userData {
                     login = _loginText.value
                     password = _passwordText.value

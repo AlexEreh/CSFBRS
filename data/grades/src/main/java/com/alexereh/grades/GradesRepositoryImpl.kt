@@ -6,7 +6,7 @@ import com.alexereh.grades.util.isNetworkAvailable
 import com.alexereh.model.PersonData
 import com.alexereh.model.StatisticRow
 import com.alexereh.network.NetworkDataSource
-import com.alexereh.util.Result
+import com.alexereh.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -16,24 +16,24 @@ class GradesRepositoryImpl(
     private val databaseDataSource: DatabaseDataSource
 ) : GradesRepository {
 
-    override fun getPersonData(login: String, password: String): Flow<Result<PersonData>> {
+    override fun getPersonData(login: String, password: String): Flow<Resource<PersonData>> {
         return flow {
-            emit(Result.Loading)
+            emit(Resource.Loading)
             if (!isNetworkAvailable(context)) {
                 emit(databaseDataSource.getPerson(login))
             } else {
                 when (val networkPerson = networkDataSource.getPerson(login, password)) {
-                    is Result.Error -> {
+                    is Resource.Error -> {
                         emit(networkPerson)
                     }
 
-                    Result.Loading -> {
+                    Resource.Loading -> {
                         emit(networkPerson)
                     }
-                    Result.NotLoading -> {
+                    Resource.NotLoading -> {
                         emit(networkPerson)
                     }
-                    is Result.Success -> {
+                    is Resource.Success -> {
                         databaseDataSource.insertPerson(
                             personData = networkPerson.data,
                             login = login
@@ -45,15 +45,15 @@ class GradesRepositoryImpl(
         }
     }
 
-    override fun getPersonRows(login: String, password: String): Flow<Result<List<StatisticRow>>> {
+    override fun getPersonRows(login: String, password: String): Flow<Resource<List<StatisticRow>>> {
         return flow {
-            emit(Result.Loading)
+            emit(Resource.Loading)
             if (!isNetworkAvailable(context)) {
                 emit(databaseDataSource.getGrades(login))
             } else {
                 when (val networkPerson = networkDataSource.getPerson(login, password)) {
-                    !is Result.Success -> {
-
+                    !is Resource.Success -> {
+                        
                     }
 
                     else -> {
@@ -64,11 +64,11 @@ class GradesRepositoryImpl(
                     }
                 }
                 when (val networkGrades = networkDataSource.getGrades(login, password)) {
-                    is Result.Error -> {
+                    is Resource.Error -> {
                         emit(networkGrades)
                     }
 
-                    is Result.Success -> {
+                    is Resource.Success -> {
 
                         databaseDataSource.insertGrades(
                             rows = networkGrades.data,

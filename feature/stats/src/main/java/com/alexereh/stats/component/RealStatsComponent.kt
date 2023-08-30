@@ -5,7 +5,7 @@ import com.alexereh.datastore.UserData
 import com.alexereh.grades.GradesRepository
 import com.alexereh.model.StatisticRow
 import com.alexereh.ui.util.BaseComponent
-import com.alexereh.util.Result
+import com.alexereh.util.Resource
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,9 +25,9 @@ class RealStatsComponent(
     private val dataStore: DataStore<UserData> by inject()
     private val repo: GradesRepository by inject()
 
-    private val _statRows: MutableStateFlow<Result<List<StatisticRow>>> =
-        MutableStateFlow(Result.NotLoading)
-    override val statRows: StateFlow<Result<List<StatisticRow>>>
+    private val _statRows: MutableStateFlow<Resource<List<StatisticRow>>> =
+        MutableStateFlow(Resource.NotLoading)
+    override val statRows: StateFlow<Resource<List<StatisticRow>>>
         get() = _statRows
 
     override fun onItemClicked(item: StatisticRow) {

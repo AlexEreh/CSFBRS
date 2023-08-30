@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface RootComponent {
     val stack: Value<ChildStack<*, Child>>
     val showSplashScreen: StateFlow<Boolean>
-    //val currentBottomNavItem: MutableStateFlow<BottomNavItem>
+
     sealed class Child {
         class StatsChild(val component: StatsComponent) : Child()
         class LoginChild(val component: LoginComponent) : Child()

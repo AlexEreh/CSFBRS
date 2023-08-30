@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("dev.shreyaspatil.compose-compiler-report-generator") version "1.1.0"
 }
 
 android {
@@ -28,7 +29,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

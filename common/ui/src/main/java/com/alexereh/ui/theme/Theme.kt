@@ -14,7 +14,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -33,6 +32,7 @@ private val lightColorScheme = lightColorScheme(
 
 @Immutable
 data class ExtendedColors(
+    val backgroundColor: Color,
     val examBackground: Color,
     val noGradeBackground: Color,
     val badGradeBackground: Color,
@@ -43,6 +43,7 @@ data class ExtendedColors(
 
 val LocalExtendedColors = staticCompositionLocalOf {
     ExtendedColors(
+        backgroundColor = Color.Unspecified,
         examBackground = Color.Unspecified,
         noGradeBackground = Color.Unspecified,
         badGradeBackground = Color.Unspecified,
@@ -53,6 +54,7 @@ val LocalExtendedColors = staticCompositionLocalOf {
 }
 
 val extendedColorsLight = ExtendedColors(
+    backgroundColor = BackGroundColorLight,
     examBackground = ExamBackGroundLight,
     noGradeBackground = NoScoreBackgroundLight,
     badGradeBackground = BadScoreBackgroundLight,
@@ -62,6 +64,7 @@ val extendedColorsLight = ExtendedColors(
 )
 
 val extendedColorsDark = ExtendedColors(
+    backgroundColor = BackGroundColorDark,
     examBackground = ExamBackGroundDark,
     noGradeBackground = NoScoreBackgroundDark,
     badGradeBackground = BadScoreBackgroundDark,
@@ -92,8 +95,8 @@ fun CSFBRSTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            //window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
     CompositionLocalProvider(
