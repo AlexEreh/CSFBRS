@@ -21,8 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexereh.model.StatisticRow
+import com.alexereh.stats.component.FakeStatsComponent
 import com.alexereh.stats.component.StatsComponent
 import com.alexereh.stats.ui.stat.DisciplineStat
+import com.alexereh.ui.theme.CSFBRSTheme
+import com.alexereh.ui.util.DefaultPreviews
 import com.alexereh.util.Resource
 
 @Composable
@@ -66,9 +69,6 @@ fun StatsContent(component: StatsComponent) {
                 ) {
                     items(
                         items = (rows as Resource.Success<List<StatisticRow>>).data,
-                        key = {
-                            "${it.disciplineName} ${it.courseNumber} ${it.semesterNumber}"
-                        }
                     ) { subject ->
                         val subjectState = remember {
                             mutableStateOf(subject)
@@ -82,5 +82,13 @@ fun StatsContent(component: StatsComponent) {
 
             }
         }
+    }
+}
+
+@DefaultPreviews
+@Composable
+fun StatsContentPreview() {
+    CSFBRSTheme {
+        StatsContent(component = FakeStatsComponent())
     }
 }

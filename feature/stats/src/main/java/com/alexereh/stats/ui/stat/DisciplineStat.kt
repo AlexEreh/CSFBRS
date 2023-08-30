@@ -69,9 +69,16 @@ fun DisciplineStat(
     ElevatedCard(
         modifier = modifier.width(IntrinsicSize.Max),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = ExtendedTheme.colors.examBackground
+            containerColor = ExtendedTheme.colors.rowCardBackground
         ),
-        elevation = CardDefaults.elevatedCardElevation(),
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 16.dp,
+            pressedElevation = 16.dp,
+            focusedElevation = 16.dp,
+            hoveredElevation = 16.dp,
+            draggedElevation = 16.dp,
+            disabledElevation = 16.dp,
+        ),
         shape = CardDefaults.elevatedShape
     ) {
         Text(
@@ -79,7 +86,7 @@ fun DisciplineStat(
             modifier = Modifier
                 .padding(TEXT_PADDING)
                 .fillMaxWidth()
-                .background(ExtendedTheme.colors.examBackground),
+                .background(ExtendedTheme.colors.rowCardBackground),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center

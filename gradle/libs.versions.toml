@@ -16,7 +16,7 @@ koin-android = "3.4.3"
 koin-androidx-compose = "3.4.6"
 lifecycle-runtime-ktx = "2.6.1"
 com-android-library = "8.2.0-alpha16"
-org-jetbrains-kotlin-android = "1.9.0"
+org-jetbrains-kotlin-android = "1.9.10"
 material3 = "1.1.1"
 compose-bom = "2023.08.00"
 com-android-application = "8.2.0-alpha16"
@@ -53,6 +53,7 @@ material3-window-size = { module = "androidx.compose.material3:material3-window-
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
+androidx-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "ui-tooling" }
 reaktive-reaktive = { group = "com.badoo.reaktive", name = "reaktive", version.ref = "reaktive" }

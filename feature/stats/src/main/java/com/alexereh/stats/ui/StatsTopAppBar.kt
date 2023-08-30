@@ -31,7 +31,7 @@ fun StatsTopAppBar(
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
         actions = {
-            IconButton(onClick = { onProfileAction() }) {
+            IconButton(onClick = onProfileAction) {
                 Icon(
                     imageVector = Icons.Filled.Person,
                     contentDescription = "Профиль"

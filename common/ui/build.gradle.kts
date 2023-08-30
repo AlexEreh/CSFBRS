@@ -55,6 +55,7 @@ dependencies {
     api("androidx.compose.material:material-icons-extended")
     api(libs.androidx.lifecycle.runtime.compose)
     api(libs.androidx.activity.compose)
+    api(libs.androidx.ui.util)
     debugApi(libs.androidx.ui.tooling)
     debugApi(libs.androidx.ui.tooling.preview)
 

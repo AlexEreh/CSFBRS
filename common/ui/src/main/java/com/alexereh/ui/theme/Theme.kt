@@ -32,8 +32,7 @@ private val lightColorScheme = lightColorScheme(
 
 @Immutable
 data class ExtendedColors(
-    val backgroundColor: Color,
-    val examBackground: Color,
+    val rowCardBackground: Color,
     val noGradeBackground: Color,
     val badGradeBackground: Color,
     val fineGradeBackground: Color,
@@ -43,8 +42,7 @@ data class ExtendedColors(
 
 val LocalExtendedColors = staticCompositionLocalOf {
     ExtendedColors(
-        backgroundColor = Color.Unspecified,
-        examBackground = Color.Unspecified,
+        rowCardBackground = Color.Unspecified,
         noGradeBackground = Color.Unspecified,
         badGradeBackground = Color.Unspecified,
         fineGradeBackground = Color.Unspecified,
@@ -54,8 +52,7 @@ val LocalExtendedColors = staticCompositionLocalOf {
 }
 
 val extendedColorsLight = ExtendedColors(
-    backgroundColor = BackGroundColorLight,
-    examBackground = ExamBackGroundLight,
+    rowCardBackground = RowCardBackgroundLight,
     noGradeBackground = NoScoreBackgroundLight,
     badGradeBackground = BadScoreBackgroundLight,
     fineGradeBackground = FineScoreBackgroundLight,
@@ -64,8 +61,7 @@ val extendedColorsLight = ExtendedColors(
 )
 
 val extendedColorsDark = ExtendedColors(
-    backgroundColor = BackGroundColorDark,
-    examBackground = ExamBackGroundDark,
+    rowCardBackground = RowCardBackgroundDark,
     noGradeBackground = NoScoreBackgroundDark,
     badGradeBackground = BadScoreBackgroundDark,
     fineGradeBackground = FineScoreBackgroundDark,

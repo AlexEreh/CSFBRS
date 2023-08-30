@@ -1,10 +1,13 @@
 package com.alexereh.stats
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Score(
-    val first: Int? = null,
-    val second: Int? = null,
-    val third: Int? = null,
-    val exam: Int? = null,
-    val overall: Int? = null,
+    val first: Int?,
+    val second: Int?,
+    val third: Int?,
+    val exam: Int?,
+    val overall: Int?,
 )
 
