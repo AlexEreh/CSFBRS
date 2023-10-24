@@ -1,13 +1,10 @@
 package com.alexereh.stats.component
 
-import com.alexereh.model.StatisticRow
-import com.alexereh.util.Resource
+import com.alexereh.stats.StatsStore
 import kotlinx.coroutines.flow.StateFlow
 
 interface StatsComponent {
-    val statRows: StateFlow<Resource<List<StatisticRow>>>
-
-    fun onItemClicked(item: StatisticRow)
+    val state: StateFlow<StatsStore.State>
     fun doProfileAction()
     fun refreshStats()
 }

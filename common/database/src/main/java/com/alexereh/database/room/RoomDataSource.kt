@@ -1,30 +1,31 @@
 package com.alexereh.database.room
 
+import arrow.core.Option
+import arrow.core.none
 import com.alexereh.database.DatabaseDataSource
 import com.alexereh.database.room.entities.DBPersonData
 import com.alexereh.database.room.entities.DBStatisticRow
 import com.alexereh.model.PersonData
 import com.alexereh.model.StatisticRow
-import com.alexereh.util.Resource
 
 class RoomDataSource(
     private val database: GradesDatabase
 ) : DatabaseDataSource {
-    override suspend fun getPerson(login: String): Resource<PersonData> {
+    override suspend fun getPerson(login: String): Option<PersonData> {
         return try {
-            val person = database.personDataDao.getPerson(login)
-            Resource.Success(person.asDomainModel())
+            return Option(database.personDataDao.getPerson(login).asDomainModel())
         } catch (e: Exception) {
-            Resource.Error(e)
+            none()
         }
     }
 
-    override suspend fun getGrades(login: String): Resource<List<StatisticRow>> {
+    override suspend fun getGrades(login: String): Option<List<StatisticRow>> {
         return try {
-            val rows = database.statisticRowDao.getAllRowsForPerson(login)
-            Resource.Success(rows.map { it.asDomainModel() })
+            Option.fromNullable(database.statisticRowDao.getAllRowsForPerson(login).map {
+                it.asDomainModel()
+            })
         } catch (e: Exception){
-            Resource.Error(e)
+            none()
         }
     }
 

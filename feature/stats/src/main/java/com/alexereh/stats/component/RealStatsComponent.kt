@@ -1,57 +1,43 @@
 package com.alexereh.stats.component
 
-import androidx.datastore.core.DataStore
-import com.alexereh.datastore.UserData
-import com.alexereh.grades.GradesRepository
-import com.alexereh.model.StatisticRow
+import com.alexereh.stats.StatsStore
+import com.alexereh.stats.StatsStoreFactory
 import com.alexereh.ui.util.BaseComponent
-import com.alexereh.util.Resource
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.mvikotlin.core.instancekeeper.getStore
+import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 class RealStatsComponent(
-    componentContext: ComponentContext,
-    private val onItemSelected: (item: StatisticRow) -> Unit,
-    private val onProfileAction: () -> Unit
+    private val onProfileAction: () -> Unit,
+    componentContext: ComponentContext
 ) : StatsComponent, KoinComponent, BaseComponent(componentContext),
     ComponentContext by componentContext {
 
-    private val dataStore: DataStore<UserData> by inject()
-    private val repo: GradesRepository by inject()
-
-    private val _statRows: MutableStateFlow<Resource<List<StatisticRow>>> =
-        MutableStateFlow(Resource.NotLoading)
-    override val statRows: StateFlow<Resource<List<StatisticRow>>>
-        get() = _statRows
-
-    override fun onItemClicked(item: StatisticRow) {
-        onItemSelected(item)
+    private val store = instanceKeeper.getStore {
+        StatsStoreFactory(
+            storeFactory = DefaultStoreFactory()
+        ).create()
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val state: StateFlow<StatsStore.State> = store.stateFlow
 
     override fun doProfileAction() {
         onProfileAction()
     }
 
     override fun refreshStats() {
-        dataStore.data
-            .onEach { user ->
-                repo.getPersonRows(user.login, user.password)
-                    .onEach {
-                        _statRows.value = it
-                    }
-                    .launchIn(ioScope)
-            }.launchIn(ioScope)
+        store.accept(StatsStore.Intent.Refresh)
     }
 
     init {
-        lifecycle.doOnCreate {
-            refreshStats()
-        }
+        lifecycle.doOnCreate(::refreshStats)
+        lifecycle.doOnDestroy(store::dispose)
     }
 }

@@ -23,18 +23,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexereh.model.PersonData
-import com.alexereh.profile.component.FakeProfileComponent
+import com.alexereh.profile.ProfileStore
 import com.alexereh.profile.component.ProfileComponent
-import com.alexereh.ui.theme.CSFBRSTheme
-import com.alexereh.util.Resource
 
 @Composable
 fun ProfileContent(component: ProfileComponent) {
-    val personData by component.personData.collectAsState()
+    val state by component.state.collectAsState()
     Scaffold (
         topBar = {
             ProfileTopAppBar(
@@ -57,11 +54,17 @@ fun ProfileContent(component: ProfileComponent) {
                     .height(IntrinsicSize.Max)
                     .weight(1f, true)
             ) {
-                when (personData) {
-                    is Resource.Loading -> {
+                when (state) {
+                    is ProfileStore.State.Error -> {
+                        Text((state as ProfileStore.State.Error).message ?: "No message error")
+                    }
+                    is ProfileStore.State.Idle -> {
+
+                    }
+                    is ProfileStore.State.Loading -> {
                         LoadingView(modifier = Modifier.fillMaxSize())
                     }
-                    is Resource.Success -> {
+                    is ProfileStore.State.Success -> {
                         OutlinedCard(
                             modifier = Modifier
                             //.wrapContentSize(Alignment.Center)
@@ -74,19 +77,13 @@ fun ProfileContent(component: ProfileComponent) {
                                     .height(IntrinsicSize.Max)
                             ) {
                                 val personDataState = remember {
-                                    mutableStateOf((personData as Resource.Success<PersonData>).data)
+                                    mutableStateOf((state as ProfileStore.State.Success).data)
                                 }
                                 PersonDataCardContent(
                                     personDataState = personDataState
                                 )
                             }
                         }
-                    }
-                    is Resource.NotLoading -> {
-
-                    }
-                    is Resource.Error -> {
-                        Text((personData as Resource.Error).exception?.localizedMessage ?: "No message error")
                     }
                 }
             }
@@ -159,12 +156,4 @@ fun TextInPersonDataCard(
         fontWeight = FontWeight.Bold,
         text = text
     )
-}
-
-@Preview
-@Composable
-fun ProfileContentPreview() {
-    CSFBRSTheme {
-        ProfileContent(component = FakeProfileComponent())
-    }
 }

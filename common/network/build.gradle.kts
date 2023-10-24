@@ -34,6 +34,9 @@ android {
 }
 
 dependencies {
+    implementation("io.arrow-kt:arrow-core:1.2.0")
+    implementation("io.arrow-kt:arrow-fx-coroutines:1.2.0")
+
     implementation(libs.koin.android)
 
     implementation("it.skrape:skrapeit:1.2.2")

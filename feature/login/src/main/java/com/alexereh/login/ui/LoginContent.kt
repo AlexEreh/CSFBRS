@@ -30,21 +30,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexereh.login.component.FakeLoginComponent
 import com.alexereh.login.component.LoginComponent
-import com.alexereh.ui.theme.CSFBRSTheme
 
 @Composable
 fun LoginContent(component: LoginComponent) {
-    val loginText by component.loginText.collectAsStateWithLifecycle()
-    val passwordText by component.passwordText.collectAsStateWithLifecycle()
+    val state by component.state.collectAsStateWithLifecycle()
     LoginContent(
         modifier = Modifier.fillMaxSize(),
-        login = loginText,
-        password = passwordText,
+        login = state.loginText,
+        password = state.passwordText,
         updateLoginText = component::updateLoginText,
         updatePasswordText = component::updatePasswordText,
         doLogin = component::doLogin
@@ -123,13 +119,5 @@ fun LoginContent(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun LoginContentPreview() {
-    CSFBRSTheme {
-        LoginContent(component = FakeLoginComponent())
     }
 }
