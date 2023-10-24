@@ -1,17 +1,16 @@
 package com.alexereh.profile.component
 
-import android.util.Log
 import com.alexereh.datastore.UserDataSource
-import com.alexereh.grades.GradesRepository
-import com.alexereh.model.PersonData
+import com.alexereh.profile.ProfileStore
+import com.alexereh.profile.ProfileStoreFactory
 import com.alexereh.ui.util.BaseComponent
-import com.alexereh.util.Resource
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.mvikotlin.core.instancekeeper.getStore
+import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -23,12 +22,16 @@ class RealProfileComponent(
 ) : ProfileComponent, KoinComponent, BaseComponent(componentContext),
     ComponentContext by componentContext {
 
-    private val gradesRepository: GradesRepository by inject()
-    private val dataSource: UserDataSource by inject()
+    private val store = instanceKeeper.getStore {
+        ProfileStoreFactory(
+            storeFactory = DefaultStoreFactory()
+        ).create()
+    }
 
-    private val _personData: MutableStateFlow<Resource<PersonData>> = MutableStateFlow(Resource.Loading)
-    override val personData: StateFlow<Resource<PersonData>>
-        get() = _personData
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val state = store.stateFlow
+
+    private val dataSource: UserDataSource by inject()
 
     override fun doBackAction() {
         onBackAction()
@@ -44,19 +47,12 @@ class RealProfileComponent(
     }
 
     override fun refreshProfile() {
-        val data = dataSource.getLoginAndPassword()!!
-        gradesRepository.getPersonData(data.login, data.password)
-            .onEach {
-                Log.e("Coroutine", "$it")
-                _personData.value = it
-            }
-            .launchIn(ioScope)
+        store.accept(ProfileStore.Intent.Refresh)
     }
 
     init {
-        lifecycle.doOnCreate {
-            refreshProfile()
-        }
+        lifecycle.doOnCreate(::refreshProfile)
+        lifecycle.doOnDestroy(store::dispose)
     }
 
 }

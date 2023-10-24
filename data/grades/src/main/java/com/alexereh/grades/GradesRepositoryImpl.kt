@@ -1,14 +1,14 @@
 package com.alexereh.grades
 
 import android.content.Context
+import arrow.core.Option
 import com.alexereh.database.DatabaseDataSource
 import com.alexereh.grades.util.isNetworkAvailable
 import com.alexereh.model.PersonData
 import com.alexereh.model.StatisticRow
 import com.alexereh.network.NetworkDataSource
-import com.alexereh.util.Resource
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class GradesRepositoryImpl(
     private val context: Context,
@@ -16,71 +16,43 @@ class GradesRepositoryImpl(
     private val databaseDataSource: DatabaseDataSource
 ) : GradesRepository {
 
-    override fun getPersonData(login: String, password: String): Flow<Resource<PersonData>> {
-        return flow {
-            emit(Resource.Loading)
-            if (!isNetworkAvailable(context)) {
-                emit(databaseDataSource.getPerson(login))
-            } else {
-                when (val networkPerson = networkDataSource.getPerson(login, password)) {
-                    is Resource.Error -> {
-                        emit(networkPerson)
-                    }
-
-                    Resource.Loading -> {
-                        emit(networkPerson)
-                    }
-                    Resource.NotLoading -> {
-                        emit(networkPerson)
-                    }
-                    is Resource.Success -> {
-                        databaseDataSource.insertPerson(
-                            personData = networkPerson.data,
-                            login = login
-                        )
-                        emit(networkPerson)
-                    }
-                }
+    override suspend fun getPersonData(login: String, password: String): Option<PersonData> {
+        if (!isNetworkAvailable(context)) {
+            return withContext(Dispatchers.IO) {
+                databaseDataSource.getPerson(login)
             }
+        }
+        val networkPerson = withContext(Dispatchers.IO) {
+            networkDataSource.getPerson(login, password)
+        }
+        if (networkPerson.isSome()) {
+            withContext(Dispatchers.IO){
+                databaseDataSource.insertPerson(
+                    personData = networkPerson.getOrNull()!!,
+                    login = login
+                )
+            }
+        }
+        return withContext(Dispatchers.IO) {
+            databaseDataSource.getPerson(login)
         }
     }
 
-    override fun getPersonRows(login: String, password: String): Flow<Resource<List<StatisticRow>>> {
-        return flow {
-            emit(Resource.Loading)
-            if (!isNetworkAvailable(context)) {
-                emit(databaseDataSource.getGrades(login))
-            } else {
-                when (val networkPerson = networkDataSource.getPerson(login, password)) {
-                    !is Resource.Success -> {
-                        
-                    }
-
-                    else -> {
-                        databaseDataSource.insertPerson(
-                            personData = networkPerson.data,
-                            login = login
-                        )
-                    }
-                }
-                when (val networkGrades = networkDataSource.getGrades(login, password)) {
-                    is Resource.Error -> {
-                        emit(networkGrades)
-                    }
-
-                    is Resource.Success -> {
-
-                        databaseDataSource.insertGrades(
-                            rows = networkGrades.data,
-                            login = login
-                        )
-                        emit(networkGrades)
-                    }
-
-                    else -> {
-                    }
-                }
+    override suspend fun getPersonRows(login: String, password: String): Option<List<StatisticRow>> {
+        if (!isNetworkAvailable(context)) {
+            val dbGrades = withContext(Dispatchers.IO) {
+                databaseDataSource.getGrades(login)
             }
+            return dbGrades
+        }
+        val networkPerson = withContext(Dispatchers.IO) {
+            networkDataSource.getPerson(login, password)
+        }
+        if (networkPerson.isSome()) {
+            databaseDataSource.insertPerson(networkPerson.getOrNull()!!, login)
+        }
+        return withContext(Dispatchers.IO) {
+            networkDataSource.getGrades(login, password)
         }
     }
 }

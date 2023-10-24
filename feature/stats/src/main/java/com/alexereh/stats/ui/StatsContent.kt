@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,17 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.alexereh.model.StatisticRow
-import com.alexereh.stats.component.FakeStatsComponent
+import com.alexereh.stats.StatsStore
 import com.alexereh.stats.component.StatsComponent
 import com.alexereh.stats.ui.stat.DisciplineStat
-import com.alexereh.ui.theme.CSFBRSTheme
-import com.alexereh.ui.util.DefaultPreviews
-import com.alexereh.util.Resource
 
 @Composable
 fun StatsContent(component: StatsComponent) {
-    val rows by component.statRows.collectAsStateWithLifecycle()
+    val state by component.state.collectAsStateWithLifecycle()
     Scaffold (
         topBar = {
             Surface(
@@ -43,11 +40,28 @@ fun StatsContent(component: StatsComponent) {
             }
         }
     ){ scaffoldPadding ->
-        when (rows) {
-            is Resource.NotLoading -> {
-
+        when (state) {
+            is StatsStore.State.Error -> {
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(scaffoldPadding)
+                        .wrapContentSize(Alignment.Center)
+                ){
+                    Text("Ошибка")
+                }
             }
-            is Resource.Loading -> {
+            is StatsStore.State.Idle -> {
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(scaffoldPadding)
+                        .wrapContentSize(Alignment.Center)
+                ){
+                    Text("Загрузка не идёт")
+                }
+            }
+            is StatsStore.State.Loading -> {
                 Column (
                     modifier = Modifier
                         .fillMaxSize()
@@ -57,7 +71,7 @@ fun StatsContent(component: StatsComponent) {
                     CircularProgressIndicator()
                 }
             }
-            is Resource.Success -> {
+            is StatsStore.State.Success -> {
                 LazyVerticalStaggeredGrid(
                     modifier = Modifier
                         .fillMaxSize()
@@ -68,7 +82,7 @@ fun StatsContent(component: StatsComponent) {
                     horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start)
                 ) {
                     items(
-                        items = (rows as Resource.Success<List<StatisticRow>>).data,
+                        items = ((state as StatsStore.State.Success).data),
                     ) { subject ->
                         val subjectState = remember {
                             mutableStateOf(subject)
@@ -77,18 +91,6 @@ fun StatsContent(component: StatsComponent) {
                     }
                 }
             }
-
-            is Resource.Error -> {
-
-            }
         }
-    }
-}
-
-@DefaultPreviews
-@Composable
-fun StatsContentPreview() {
-    CSFBRSTheme {
-        StatsContent(component = FakeStatsComponent())
     }
 }

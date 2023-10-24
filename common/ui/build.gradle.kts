@@ -44,10 +44,14 @@ dependencies {
     api(libs.decompose.jetpack.compose)
     api(libs.decompose.main)
 
-    api(libs.reaktive.reaktive)
-    api(libs.reaktive.annotations)
-    api(libs.reaktive.reaktiveTesting)
-    api(libs.reaktive.coroutinesInterop)
+    api("com.arkivanov.mvikotlin:mvikotlin:3.2.1")
+    api("com.arkivanov.mvikotlin:mvikotlin-main:3.2.1")
+    api("com.arkivanov.mvikotlin:mvikotlin-logging:3.2.1")
+    api("com.arkivanov.mvikotlin:mvikotlin-timetravel:3.2.1")
+    api("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:3.2.1")
+
+    api("io.arrow-kt:arrow-core:1.2.0")
+    api("io.arrow-kt:arrow-fx-coroutines:1.2.0")
 
     api(platform(libs.compose.bom))
     api(libs.material3)

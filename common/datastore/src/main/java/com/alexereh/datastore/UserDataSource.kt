@@ -2,6 +2,8 @@ package com.alexereh.datastore
 
 import android.util.Log
 import androidx.datastore.core.DataStore
+import arrow.core.Option
+import arrow.core.none
 import com.alexereh.model.LoginData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -42,15 +44,15 @@ class UserDataSource(
             Log.e("DataSource", "Failed to change logged in state", ioException)
         }
     }
-    fun getLoginAndPassword(): LoginData? {
+    fun getLoginAndPassword(): Option<LoginData> {
         return try {
             runBlocking(Dispatchers.IO) {
                 val data = dataStore.data.first()
-                LoginData(data.login, data.password)
+                Option(LoginData(data.login, data.password))
             }
         } catch (ioException: IOException) {
             Log.e("DataSource", "Failed to get login data", ioException)
-            null
+            none()
         }
     }
 }

@@ -1,12 +1,13 @@
 package com.alexereh.network.skrape
 
+import arrow.core.Option
+import arrow.core.none
 import com.alexereh.model.Marks
 import com.alexereh.model.PersonData
 import com.alexereh.model.ScoringType
 import com.alexereh.model.StatisticRow
 import com.alexereh.network.NetworkDataSource
 import com.alexereh.network.util.Endpoint
-import com.alexereh.util.Resource
 import it.skrape.core.document
 import it.skrape.fetcher.BrowserFetcher
 import it.skrape.fetcher.Method
@@ -16,7 +17,7 @@ import it.skrape.fetcher.skrape
 class SkrapeDataSource(
     private val baseEndpoint: Endpoint
 ) : NetworkDataSource {
-    override suspend fun getGrades(login: String, password: String): Resource<List<StatisticRow>> {
+    override suspend fun getGrades(login: String, password: String): Option<List<StatisticRow>> {
         return skrape(BrowserFetcher) {
             request {
                 method = Method.POST
@@ -32,9 +33,9 @@ class SkrapeDataSource(
                     }
                 }
             }
-            response(fun it.skrape.fetcher.Result.(): Resource<List<StatisticRow>> {
+            response(fun it.skrape.fetcher.Result.(): Option<List<StatisticRow>> {
                 if (document.allElements.indexOfFirst { it.tagName == "dl" } == -1) {
-                    return Resource.Error(Exception("No data"))
+                    return none()
                 }
 
                 val gradesRowElementsList = document.findAll("tbody > tr")
@@ -57,12 +58,12 @@ class SkrapeDataSource(
                         )
                     )
                 }
-                return Resource.Success(staticRows)
+                return Option(staticRows)
             })
         }
     }
 
-    override suspend fun getPerson(login: String, password: String): Resource<PersonData> {
+    override suspend fun getPerson(login: String, password: String): Option<PersonData> {
         return skrape(BrowserFetcher) {
             request {
                 method = Method.POST
@@ -78,9 +79,9 @@ class SkrapeDataSource(
                     }
                 }
             }
-            response(fun it.skrape.fetcher.Result.(): Resource<PersonData> {
+            response(fun it.skrape.fetcher.Result.(): Option<PersonData> {
                 if (document.allElements.indexOfFirst { it.tagName == "dl" } == -1) {
-                    return Resource.Error(Exception("No data"))
+                    return none()
                 }
                 val primaryElementsList = document.findAll("dl > dd")
                 val fullNameSplit = primaryElementsList[0].ownText.split(" ")
@@ -93,7 +94,7 @@ class SkrapeDataSource(
                 val group = primaryElementsList[3].children.first().ownText.toInt()
                 val specialty = primaryElementsList[4].ownText
 
-                return Resource.Success(
+                return Option(
                     PersonData(
                         firstName = fullNameSplit[1],
                         lastName = fullNameSplit[0],

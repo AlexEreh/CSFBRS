@@ -1,17 +1,17 @@
 package com.alexereh.database
 
+import arrow.core.Option
 import com.alexereh.model.PersonData
 import com.alexereh.model.StatisticRow
-import com.alexereh.util.Resource
 
 interface DatabaseDataSource {
     suspend fun getPerson(
         login: String,
-    ): Resource<PersonData>
+    ): Option<PersonData>
 
     suspend fun getGrades(
         login: String,
-    ): Resource<List<StatisticRow>>
+    ): Option<List<StatisticRow>>
 
     fun insertPerson(
         personData: PersonData,

@@ -62,11 +62,10 @@ class DefaultRootComponent(
     private fun statsComponent(componentContext: ComponentContext): StatsComponent {
         return RealStatsComponent(
             componentContext = componentContext,
-            onItemSelected = {
+            onProfileAction = {
+                navigation.push(Config.Profile)
             }
-        ) {
-            navigation.push(Config.Profile)
-        }
+        )
     }
 
     private fun loginComponent(componentContext: ComponentContext): LoginComponent {

@@ -1,11 +1,10 @@
 package com.alexereh.profile.component
 
-import com.alexereh.model.PersonData
-import com.alexereh.util.Resource
+import com.alexereh.profile.ProfileStore
 import kotlinx.coroutines.flow.StateFlow
 
 interface ProfileComponent {
-    val personData: StateFlow<Resource<PersonData>>
+    val state: StateFlow<ProfileStore.State>
     fun doBackAction()
     fun doLogoutAction()
     fun refreshProfile()
