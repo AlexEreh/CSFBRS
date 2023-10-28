@@ -54,7 +54,7 @@ protobuf {
 }
 
 dependencies {
-    implementation("io.arrow-kt:arrow-core:1.2.0")
+    implementation("io.arrow-kt:arrow-core:1.2.1")
     implementation("io.arrow-kt:arrow-fx-coroutines:1.2.1")
 
     implementation(libs.androidx.datastore.preferences)
