@@ -60,8 +60,8 @@ dependencies {
     api(libs.androidx.lifecycle.runtime.compose)
     api(libs.androidx.activity.compose)
     api(libs.androidx.ui.util)
-    debugApi(libs.androidx.ui.tooling)
-    debugApi(libs.androidx.ui.tooling.preview)
+    api(libs.androidx.ui.tooling)
+    api(libs.androidx.ui.tooling.preview)
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
