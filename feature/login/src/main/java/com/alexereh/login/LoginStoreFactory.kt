@@ -24,42 +24,30 @@ internal class LoginStoreFactory(
         object : LoginStore, Store<LoginStore.Intent, LoginStore.State, LoginStore.Label> by storeFactory.create(
             name = "LoginStore",
             initialState = LoginStore.State(),
-            bootstrapper = BootstrapperImpl(
-                onLogin = onLogin,
-                onCheckStorage = onCheckStorage
-            ),
-            executorFactory = ::ExecutorImpl,
+            bootstrapper = BootstrapperImpl(),
+            executorFactory = { ExecutorImpl(onLogin) },
             reducer = ReducerImpl
         ) {}
 
-    private sealed interface Action {
-        data class SetLambdas(
-            val onLogin: () -> Unit,
-            val onCheckStorage: (Boolean) -> Unit
-        ): Action
-    }
+    private sealed interface Action
 
     private sealed interface Msg {
         data class ChangeLogin(val newLogin: String): Msg
         data class ChangePassword(val newPassword: String): Msg
         data object StartLogin: Msg
         data object LoginSuccess: Msg
-        data class ChangeLambdas(
-            val onLogin: () -> Unit,
-            val onCheckStorage: (Boolean) -> Unit
-        ): Msg
     }
 
     private class BootstrapperImpl(
-        private val onLogin: () -> Unit,
-        private val onCheckStorage: (Boolean) -> Unit
     ) : CoroutineBootstrapper<Action>() {
         override fun invoke() {
-            dispatch(Action.SetLambdas(onLogin, onCheckStorage))
         }
     }
 
-    private class ExecutorImpl : KoinComponent, CoroutineExecutor<LoginStore.Intent, Action, LoginStore.State, Msg, LoginStore.Label>() {
+    private class ExecutorImpl(
+        private val onLogin: () -> Unit
+    ) : CoroutineExecutor<LoginStore.Intent, Action, LoginStore.State, Msg, LoginStore.Label>(),
+        KoinComponent {
 
         private val dataSource: UserDataSource by inject()
         private val repo: GradesRepository by inject()
@@ -96,18 +84,13 @@ internal class LoginStoreFactory(
                 }
                 withContext(Dispatchers.IO) { dataSource.setNewUserData(userData) }
                 withContext(Dispatchers.Main) {
-                    state.onLogin()
+                    onLogin()
                 }
                 dispatch(Msg.LoginSuccess)
             }
         }
 
         override fun executeAction(action: Action, getState: () -> LoginStore.State) {
-            when (action) {
-                is Action.SetLambdas -> {
-                    dispatch(Msg.ChangeLambdas(action.onLogin, action.onCheckStorage))
-                }
-            }
         }
     }
 
@@ -117,10 +100,6 @@ internal class LoginStoreFactory(
                 is Msg.ChangeLogin -> this.copy(loginText = msg.newLogin)
                 is Msg.ChangePassword -> this.copy(passwordText = msg.newPassword)
                 Msg.LoginSuccess -> this.copy(hasLogin = true)
-                is Msg.ChangeLambdas -> this.copy(
-                    onLogin = msg.onLogin,
-                    onCheckStorage = msg.onCheckStorage
-                )
                 Msg.StartLogin -> this
             }
     }
