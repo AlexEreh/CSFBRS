@@ -17,8 +17,6 @@ interface LoginStore : Store<Intent, State, Label> {
         val loginText: String = "",
         val passwordText: String = "",
         val hasLogin: Boolean = false,
-        val onLogin: () -> Unit = {},
-        val onCheckStorage: (Boolean) -> Unit = {}
     )
 
     sealed interface Label
