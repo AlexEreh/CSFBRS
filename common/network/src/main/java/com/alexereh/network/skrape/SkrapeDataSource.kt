@@ -51,10 +51,10 @@ class SkrapeDataSource(
                             firstAttestationScore = it.children[6].ownText.toIntOrNull(),
                             secondAttestationScore = it.children[7].ownText.toIntOrNull(),
                             thirdAttestationScore = it.children[8].ownText.toIntOrNull(),
-                            examScore = it.children[10].ownText.toIntOrNull(),
-                            additionalScore = it.children[11].ownText.toIntOrNull(),
-                            resultScore = it.children[12].ownText.toIntOrNull(),
-                            resultString = it.children[13].ownText
+                            examScore = it.children[11].ownText.toIntOrNull(),
+                            additionalScore = it.children[12].ownText.toIntOrNull(),
+                            resultScore = it.children[13].ownText.toIntOrNull(),
+                            resultString = it.children[14].ownText
                         )
                     )
                 }
