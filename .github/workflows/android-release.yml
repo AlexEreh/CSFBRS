@@ -1,4 +1,4 @@
-name: Android CI
+name: Android Release CI
 
 on:
   push:
@@ -24,7 +24,9 @@ jobs:
         cache: gradle
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+    # Даём возможность глэдл врапперу запускаться
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      # Делаем сборку проекта
     - name: Build with Gradle
       run: ./gradlew build
