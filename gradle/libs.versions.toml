@@ -24,7 +24,7 @@ compose-bom = "2024.01.00"
 com-android-application = "8.2.2"
 coil = "2.4.0"
 ui-tooling = "1.6.0"
-protobuf = "3.25.1"
+protobuf = "3.25.3"
 protobufPlugin = "0.9.4"
 tink = "1.10.0"
 
