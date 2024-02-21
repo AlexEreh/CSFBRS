@@ -18,7 +18,7 @@ lifecycle-runtime-ktx = "2.7.0"
 
 com-android-library = "8.2.2"
 
-material3 = "1.2.0-rc01"
+material3 = "1.2.0"
 material3-android = "1.2.0-rc01"
 compose-bom = "2024.01.00"
 com-android-application = "8.2.2"
