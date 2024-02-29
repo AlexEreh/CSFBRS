@@ -51,7 +51,7 @@ dependencies {
     api("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:3.3.0")
 
     api("io.arrow-kt:arrow-core:1.2.2")
-    api("io.arrow-kt:arrow-fx-coroutines:1.2.2")
+    api("io.arrow-kt:arrow-fx-coroutines:1.2.3")
 
     api(platform(libs.compose.bom))
     api(libs.material3)
