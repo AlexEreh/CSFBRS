@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    implementation("io.arrow-kt:arrow-core:1.2.2")
+    implementation("io.arrow-kt:arrow-core:1.2.3")
     implementation("io.arrow-kt:arrow-fx-coroutines:1.2.3")
 
     implementation(libs.koin.android)

@@ -41,7 +41,7 @@ dependencies {
 
     api(libs.decompose.main)
 
-    api("io.arrow-kt:arrow-core:1.2.2")
+    api("io.arrow-kt:arrow-core:1.2.3")
     api("io.arrow-kt:arrow-fx-coroutines:1.2.3")
 
     implementation(libs.koin.android)
