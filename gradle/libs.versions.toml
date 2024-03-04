@@ -16,7 +16,7 @@ koin-android = "3.5.3"
 koin-androidx-compose = "3.5.3"
 lifecycle-runtime-ktx = "2.7.0"
 
-com-android-library = "8.2.2"
+com-android-library = "8.3.0"
 
 material3 = "1.2.0"
 material3-android = "1.2.0-rc01"
