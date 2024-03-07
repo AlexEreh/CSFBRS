@@ -30,7 +30,7 @@ tink = "1.12.0"
 
 # Kotlin aware
 kotlinx-serialization = "1.9.21"
-org-jetbrains-kotlin-android = "1.9.21"
+org-jetbrains-kotlin-android = "1.9.23"
 com-google-devtools-ksp = "1.9.21-1.0.15"
 
 [libraries]
