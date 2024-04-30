@@ -45,7 +45,7 @@ dependencies {
     api(libs.decompose.main)
 
     api("com.arkivanov.mvikotlin:mvikotlin:3.3.0")
-    api("com.arkivanov.mvikotlin:mvikotlin-main:3.3.0")
+    api("com.arkivanov.mvikotlin:mvikotlin-main:4.0.0")
     api("com.arkivanov.mvikotlin:mvikotlin-logging:3.3.0")
     api("com.arkivanov.mvikotlin:mvikotlin-timetravel:3.3.0")
     api("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:3.3.0")
