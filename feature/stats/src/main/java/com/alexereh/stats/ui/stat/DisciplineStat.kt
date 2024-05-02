@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
@@ -66,20 +67,19 @@ fun DisciplineStat(
     disciplineScoring: ScoringType = ScoringType.EXAM,
     score: Score
 ) {
-    ElevatedCard(
+    Card(
         modifier = modifier.width(IntrinsicSize.Max),
-        colors = CardDefaults.elevatedCardColors(
+        colors = CardDefaults.cardColors(
             containerColor = ExtendedTheme.colors.rowCardBackground
         ),
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 16.dp,
-            pressedElevation = 16.dp,
-            focusedElevation = 16.dp,
-            hoveredElevation = 16.dp,
-            draggedElevation = 16.dp,
-            disabledElevation = 16.dp,
-        ),
-        shape = CardDefaults.elevatedShape
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp,
+            pressedElevation = 4.dp,
+            focusedElevation = 4.dp,
+            hoveredElevation = 4.dp,
+            draggedElevation = 4.dp,
+            disabledElevation = 4.dp,
+        )
     ) {
         Text(
             text = disciplineName,
