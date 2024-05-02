@@ -30,13 +30,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.13"
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
@@ -47,15 +40,15 @@ dependencies {
 
     api(libs.bundles.arrow)
 
-    api(platform(libs.compose.bom))
+    api(platform(libs.androidx.compose.bom))
     api(libs.material3)
     api(libs.material3.window.size)
     api(libs.materialIconsExtended)
     api(libs.androidx.lifecycle.runtime.compose)
     api(libs.androidx.activity.compose)
     api(libs.androidx.ui.util)
-    api(libs.androidx.ui.tooling)
-    api(libs.androidx.ui.tooling.preview)
+    api(libs.androidx.compose.ui.tooling)
+    api(libs.androidx.compose.ui.tooling.preview)
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)

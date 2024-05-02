@@ -1,7 +1,9 @@
+import com.alexereh.csfbrs.BrsBuildType
+
 plugins {
     alias(libs.plugins.com.google.devtools.ksp)
-    alias(libs.plugins.com.android.application)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("csfbrs.android.application")
+    id("csfbrs.android.application.compose")
     id("kotlin-parcelize")
 }
 
@@ -12,7 +14,6 @@ android {
     defaultConfig {
         applicationId = "com.alexereh.csfbrs"
         minSdk = 25
-        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -23,33 +24,16 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             multiDexEnabled = true
-            applicationIdSuffix = ".release"
+            applicationIdSuffix = BrsBuildType.RELEASE.applicationIdSuffix
             signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             isMinifyEnabled = false
-            applicationIdSuffix = ".debug"
+            applicationIdSuffix = BrsBuildType.DEBUG.applicationIdSuffix
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-        //jvmToolchain()
-    }
-    kotlin {
-        jvmToolchain(8)
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {

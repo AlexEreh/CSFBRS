@@ -1,13 +1,11 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
         gradlePluginPortal()
         maven("https://jitpack.io")
     }
-}
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version("0.4.0")
 }
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
@@ -19,6 +17,8 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "CSFBRS"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":data:grades")
 include(":feature:stats")

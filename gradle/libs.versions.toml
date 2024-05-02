@@ -1,9 +1,9 @@
 [versions]
+androidDesugarJdkLibs = "2.0.4"
+androidTools = "31.4.0"
 activity-compose = "1.9.0"
-androidx-room = "2.6.1"
 coreSplashscreen = "1.0.1"
-room-ktx = "2.6.1"
-room-runtime = "2.6.1"
+room = "2.6.1"
 datastore-preferences = "1.1.1"
 decompose = "2.2.2"
 core-ktx = "1.13.1"
@@ -16,12 +16,12 @@ koin-android = "3.5.4"
 koin-androidx-compose = "3.5.4"
 lifecycle-runtime-ktx = "2.7.0"
 
-com-android-library = "8.3.2"
+android-gradlePlugin = "8.3.2"
+androidxComposeCompiler = "1.5.13"
 
 material3 = "1.2.1"
 material3-android = "1.3.0-alpha06"
-compose-bom = "2024.05.00"
-com-android-application = "8.3.2"
+androidx-compose-bom = "2024.05.00"
 coil = "2.6.0"
 ui-tooling = "1.6.7"
 protobuf = "4.26.1"
@@ -32,19 +32,19 @@ skrape-it = "1.2.2"
 mvikotlin = "3.3.0"
 
 # Kotlin aware
-kotlinx-serialization = "1.9.23"
-org-jetbrains-kotlin-android = "1.9.23"
-com-google-devtools-ksp = "1.9.23-1.0.20"
+kotlin = "1.9.23"
+ksp = "1.9.23-1.0.20"
 
 [libraries]
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore-preferences" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-runtime-ktx" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-ktx" }
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-runtime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 android-material = { module = "com.google.android.material:material", version.ref = "android-material" }
@@ -59,11 +59,11 @@ material3 = { module = "androidx.compose.material3:material3", version.ref = "ma
 material3-android = { module = "androidx.compose.material3:material3-android", version.ref = "material3-android" }
 material3-window-size = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3" }
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "ui-tooling" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "ui-tooling" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 google-tink = { group="com.google.crypto.tink", name="tink-android", version.ref="tink" }
@@ -77,6 +77,12 @@ mvikotlin-timetravel = { group="com.arkivanov.mvikotlin", name="mvikotlin-timetr
 mvikotlin-coroutines = { group="com.arkivanov.mvikotlin", name="mvikotlin-extensions-coroutines", version.ref="mvikotlin" }
 materialIconsExtended = { group="androidx.compose.material", name="material-icons-extended" }
 
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+
 [bundles]
 project-src = ["core-ktx", "androidx-appcompat", "android-material"]
 project-test = ["junit"]
@@ -86,9 +92,9 @@ datastore = ["androidx-datastore", "androidx-datastore-preferences"]
 mvikotlin = ["mvikotlin", "mvikotlin-main", "mvikotlin-logging", "mvikotlin-timetravel", "mvikotlin-coroutines"]
 
 [plugins]
-com-android-library = { id = "com.android.library", version.ref = "com-android-library" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
-com-android-application = { id = "com.android.application", version.ref = "com-android-application" }
-com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
-kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization" }
+com-android-library = { id = "com.android.library", version.ref = "android-gradlePlugin" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+com-android-application = { id = "com.android.application", version.ref = "android-gradlePlugin" }
+com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
