@@ -2,8 +2,8 @@ package com.alexereh.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val PrimaryDark = Color(0xFFFFFFFF)
-val SecondaryDark = Color(0xFFFFFFFF)
+val PrimaryDark = Color(0xFF4300FF)
+val SecondaryDark = Color(0xFF625b71)
 val TertiaryDark = Color(0xFFFFFFFF)
 
 val PrimaryLight = Color(0xFF4300FF)
@@ -11,10 +11,10 @@ val SecondaryLight = Color(0xFF625b71)
 val TertiaryLight = Color(0xFF7D5260)
 
 val RowCardBackgroundLight = Color(0xFFFFFFFF)
-val RowCardBackgroundDark = Color(0xFF6200EA)
+val RowCardBackgroundDark = Color(0xFF1B1B1B)
 
 val StatsRowBackGroundLight = Color(0xFFFFFFFF)
-val StatsRowBackGroundDark = Color(0xFF003761)
+val StatsRowBackGroundDark = Color(0xFF1B1B1B)
 
 val NoScoreBackgroundLight = StatsRowBackGroundLight
 val BadScoreBackgroundLight = Color(0xFFE91E63)
