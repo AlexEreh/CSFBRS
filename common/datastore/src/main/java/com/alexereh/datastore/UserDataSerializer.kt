@@ -4,6 +4,8 @@ import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
 import androidx.datastore.preferences.protobuf.InvalidProtocolBufferException
 import com.google.crypto.tink.Aead
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -33,6 +35,8 @@ class UserDataSerializer(
 
     override suspend fun writeTo(t: UserData, output: OutputStream) {
         val encryptedBytes = aead.encrypt(t.toByteArray(), null)
-        output.write(encryptedBytes)
+        withContext(Dispatchers.IO) {
+            output.write(encryptedBytes)
+        }
     }
 }
