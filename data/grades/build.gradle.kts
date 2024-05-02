@@ -36,16 +36,10 @@ android {
 }
 
 dependencies {
-    implementation("it.skrape:skrapeit:1.2.2")
-    implementation(project(mapOf("path" to ":common:model")))
-
+    implementation(project(":common:model"))
     api(libs.decompose.main)
-
-    api("io.arrow-kt:arrow-core:1.2.3")
-    api("io.arrow-kt:arrow-fx-coroutines:1.2.3")
-
+    api(libs.bundles.arrow)
     implementation(libs.koin.android)
-
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)

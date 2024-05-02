@@ -2,7 +2,6 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    id("dev.shreyaspatil.compose-compiler-report-generator") version "1.1.0"
 }
 
 android {
@@ -29,7 +28,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.7"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -44,19 +43,14 @@ dependencies {
     api(libs.decompose.jetpack.compose)
     api(libs.decompose.main)
 
-    api("com.arkivanov.mvikotlin:mvikotlin:3.3.0")
-    api("com.arkivanov.mvikotlin:mvikotlin-main:3.3.0")
-    api("com.arkivanov.mvikotlin:mvikotlin-logging:3.3.0")
-    api("com.arkivanov.mvikotlin:mvikotlin-timetravel:3.3.0")
-    api("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:3.3.0")
+    api(libs.bundles.mvikotlin)
 
-    api("io.arrow-kt:arrow-core:1.2.3")
-    api("io.arrow-kt:arrow-fx-coroutines:1.2.3")
+    api(libs.bundles.arrow)
 
     api(platform(libs.compose.bom))
     api(libs.material3)
     api(libs.material3.window.size)
-    api("androidx.compose.material:material-icons-extended")
+    api(libs.materialIconsExtended)
     api(libs.androidx.lifecycle.runtime.compose)
     api(libs.androidx.activity.compose)
     api(libs.androidx.ui.util)

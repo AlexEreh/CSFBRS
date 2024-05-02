@@ -51,4 +51,13 @@ class UserDataSource(
             none()
         }
     }
+    suspend fun hasLogin(): Boolean {
+        return try {
+            dataStore.data.first()
+            true
+        } catch (e: NoSuchElementException) {
+            Log.e("DataSource", "Failed to get login data", e)
+            false
+        }
+    }
 }

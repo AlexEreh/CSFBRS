@@ -1,36 +1,39 @@
 [versions]
-activity-compose = "1.8.2"
+activity-compose = "1.9.0"
 androidx-room = "2.6.1"
 coreSplashscreen = "1.0.1"
 room-ktx = "2.6.1"
 room-runtime = "2.6.1"
-datastore-preferences = "1.0.0"
+datastore-preferences = "1.1.1"
 decompose = "2.2.2"
-core-ktx = "1.12.0"
+core-ktx = "1.13.1"
 androidx-appcompat = "1.6.1"
 android-material = "1.11.0"
 junit = "4.13.2"
 androidx-junit = "1.1.5"
 androidx-espresso = "3.5.1"
-koin-android = "3.5.3"
+koin-android = "3.5.4"
 koin-androidx-compose = "3.5.4"
 lifecycle-runtime-ktx = "2.7.0"
 
 com-android-library = "8.3.2"
 
 material3 = "1.2.1"
-material3-android = "1.3.0-alpha02"
-compose-bom = "2024.02.02"
+material3-android = "1.3.0-alpha06"
+compose-bom = "2024.05.00"
 com-android-application = "8.3.2"
 coil = "2.6.0"
-ui-tooling = "1.6.5"
+ui-tooling = "1.6.7"
 protobuf = "4.26.1"
 protobufPlugin = "0.9.4"
 tink = "1.12.0"
+arrow = "1.2.3"
+skrape-it = "1.2.2"
+mvikotlin = "3.3.0"
 
 # Kotlin aware
-kotlinx-serialization = "1.9.21"
-org-jetbrains-kotlin-android = "1.9.21"
+kotlinx-serialization = "1.9.23"
+org-jetbrains-kotlin-android = "1.9.23"
 com-google-devtools-ksp = "1.9.23-1.0.20"
 
 [libraries]
@@ -64,11 +67,23 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 google-tink = { group="com.google.crypto.tink", name="tink-android", version.ref="tink" }
+arrow-core = { group="io.arrow-kt", name="arrow-core", version.ref="arrow" }
+arrow-fxCoroutines = { group="io.arrow-kt", name="arrow-fx-coroutines", version.ref="arrow" }
+skrape = { group="it.skrape", name="skrapeit", version.ref="skrape-it" }
+mvikotlin = { group="com.arkivanov.mvikotlin", name="mvikotlin", version.ref="mvikotlin" }
+mvikotlin-main = { group="com.arkivanov.mvikotlin", name="mvikotlin-main", version.ref="mvikotlin" }
+mvikotlin-logging = { group="com.arkivanov.mvikotlin", name="mvikotlin-logging", version.ref="mvikotlin" }
+mvikotlin-timetravel = { group="com.arkivanov.mvikotlin", name="mvikotlin-timetravel", version.ref="mvikotlin" }
+mvikotlin-coroutines = { group="com.arkivanov.mvikotlin", name="mvikotlin-extensions-coroutines", version.ref="mvikotlin" }
+materialIconsExtended = { group="androidx.compose.material", name="material-icons-extended" }
 
 [bundles]
 project-src = ["core-ktx", "androidx-appcompat", "android-material"]
 project-test = ["junit"]
 android-test = ["androidx-junit", "androidx-espresso"]
+arrow = ["arrow-core", "arrow-fxCoroutines"]
+datastore = ["androidx-datastore", "androidx-datastore-preferences"]
+mvikotlin = ["mvikotlin", "mvikotlin-main", "mvikotlin-logging", "mvikotlin-timetravel", "mvikotlin-coroutines"]
 
 [plugins]
 com-android-library = { id = "com.android.library", version.ref = "com-android-library" }

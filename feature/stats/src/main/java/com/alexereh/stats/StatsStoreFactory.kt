@@ -1,9 +1,9 @@
 package com.alexereh.stats
 
-import androidx.datastore.core.DataStore
 import arrow.core.Option
-import com.alexereh.datastore.UserData
+import com.alexereh.datastore.UserDataSource
 import com.alexereh.grades.GradesRepository
+import com.alexereh.model.LoginData
 import com.alexereh.model.StatisticRow
 import com.alexereh.stats.StatsStore.Intent
 import com.alexereh.stats.StatsStore.Label
@@ -14,7 +14,6 @@ import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -60,7 +59,7 @@ internal class StatsStoreFactory(
     private class ExecutorImpl : KoinComponent,
         CoroutineExecutor<Intent, Action, State, Msg, Label>() {
 
-        val dataStore: DataStore<UserData> by inject()
+        val dataStore: UserDataSource by inject()
         val repo: GradesRepository by inject()
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
@@ -91,9 +90,7 @@ internal class StatsStoreFactory(
         private fun loadStats() {
             scope.launch {
                 dispatch(Msg.LoadingStarted)
-                val user: Option<UserData> = withContext(Dispatchers.IO) {
-                    return@withContext Option.fromNullable(dataStore.data.firstOrNull())
-                }
+                val user: Option<LoginData> = dataStore.getLoginAndPassword()
                 if (user.isNone()) {
                     dispatch(Msg.Error("Вход в пользователя не был выполнен!"))
                     return@launch

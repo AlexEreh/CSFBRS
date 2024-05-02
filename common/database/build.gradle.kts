@@ -40,11 +40,9 @@ dependencies {
 
     implementation(libs.koin.android)
 
-    implementation("io.arrow-kt:arrow-core:1.2.3")
-    implementation("io.arrow-kt:arrow-fx-coroutines:1.2.3")
+    implementation(libs.bundles.arrow)
 
     /// Room
-    annotationProcessor(libs.room.compiler)
     api(libs.androidx.room.runtime)
     api(libs.androidx.room.ktx)
     ksp(libs.room.compiler)

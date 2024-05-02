@@ -2,7 +2,6 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    id("dev.shreyaspatil.compose-compiler-report-generator") version "1.1.0"
 }
 
 android {
@@ -29,7 +28,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.7"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -49,16 +48,14 @@ dependencies {
 
     implementation(libs.protobuf.kotlin.lite)
 
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-
-    implementation(project(mapOf("path" to ":common:ui")))
+    implementation(project(":common:ui"))
 
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
-    implementation(project(mapOf("path" to ":common:model")))
-    implementation(project(mapOf("path" to ":data:grades")))
-    implementation(project(mapOf("path" to ":common:datastore")))
+    implementation(project(":common:model"))
+    implementation(project(":data:grades"))
+    implementation(project(":common:datastore"))
     implementation(project(":common:util"))
     implementation(project(":common:util"))
     testImplementation(libs.junit)

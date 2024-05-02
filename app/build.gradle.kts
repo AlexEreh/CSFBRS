@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    id("dev.shreyaspatil.compose-compiler-report-generator") version "1.1.0"
     id("kotlin-parcelize")
 }
 
@@ -50,7 +49,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.7"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {
@@ -71,24 +70,22 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
 
-    implementation(project(mapOf("path" to ":feature:profile")))
-    implementation(project(mapOf("path" to ":feature:stats")))
-    implementation(project(mapOf("path" to ":feature:login")))
-    implementation(project(mapOf("path" to ":data:grades")))
-    implementation(project(mapOf("path" to ":common:ui")))
-    implementation(project(mapOf("path" to ":common:model")))
-    implementation(project(mapOf("path" to ":common:datastore")))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:stats"))
+    implementation(project(":feature:login"))
+    implementation(project(":data:grades"))
+    implementation(project(":common:ui"))
+    implementation(project(":common:model"))
+    implementation(project(":common:datastore"))
 
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
 
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.datastore)
+    implementation(libs.bundles.datastore)
 
     implementation(libs.protobuf.kotlin.lite)
 
     /// Room
-    annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.room.compiler)

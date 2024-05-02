@@ -1,7 +1,6 @@
 package com.alexereh.login.component
 
-import androidx.datastore.core.DataStore
-import com.alexereh.datastore.UserData
+import com.alexereh.datastore.UserDataSource
 import com.alexereh.login.LoginStore
 import com.alexereh.login.LoginStoreFactory
 import com.alexereh.ui.util.BaseComponent
@@ -12,7 +11,6 @@ import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -35,7 +33,7 @@ class RealLoginComponent(
     @OptIn(ExperimentalCoroutinesApi::class)
     override val state = store.stateFlow
 
-    private val dataStore: DataStore<UserData> by inject()
+    private val dataStore: UserDataSource by inject()
 
     override fun updateLoginText(newText: String) {
         store.accept(LoginStore.Intent.ChangeLogin(newText))
@@ -52,18 +50,18 @@ class RealLoginComponent(
     init {
         lifecycle.doOnCreate {
             ioScope.launch {
-                val userData = dataStore.data.first()
+                val hasLogin = dataStore.hasLogin()
 
-                if (userData.loggedIn) {
+                if (hasLogin) {
                     mainScope.launch {
                         onLogin()
                     }
                     ioScope.launch {
                         //delay(1_500L)
-                        onCheckStorage(!userData.loggedIn)
+                        onCheckStorage(false)
                     }
                 } else {
-                    onCheckStorage(!userData.loggedIn)
+                    onCheckStorage(true)
                 }
             }
         }
