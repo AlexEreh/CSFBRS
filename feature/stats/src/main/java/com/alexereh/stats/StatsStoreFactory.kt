@@ -99,8 +99,8 @@ internal class StatsStoreFactory(
                 val personRows = withContext(Dispatchers.IO) {
                     repo.getPersonRows(userData.login, userData.password)
                 }
-                if (personRows.isNone()) {
-                    dispatch(Msg.Error("Нет статистики!"))
+                if (personRows.isLeft()) {
+                    dispatch(Msg.Error("Нет статистики!\nСообщение: ${personRows.leftOrNull()!!}"))
                     return@launch
                 }
                 val rows = personRows.getOrNull()!!

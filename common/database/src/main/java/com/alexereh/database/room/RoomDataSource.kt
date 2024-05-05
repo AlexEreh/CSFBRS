@@ -1,7 +1,10 @@
 package com.alexereh.database.room
 
+import arrow.core.Either
 import arrow.core.Option
+import arrow.core.left
 import arrow.core.none
+import arrow.core.right
 import com.alexereh.database.DatabaseDataSource
 import com.alexereh.database.room.entities.DBPersonData
 import com.alexereh.database.room.entities.DBStatisticRow
@@ -11,21 +14,21 @@ import com.alexereh.model.StatisticRow
 class RoomDataSource(
     private val database: GradesDatabase
 ) : DatabaseDataSource {
-    override suspend fun getPerson(login: String): Option<PersonData> {
+    override suspend fun getPerson(login: String): Either<String, PersonData> {
         return try {
-            return Option(database.personDataDao.getPerson(login).asDomainModel())
+            return database.personDataDao.getPerson(login).asDomainModel().right()
         } catch (e: Exception) {
-            none()
+            e.message!!.left()
         }
     }
 
-    override suspend fun getGrades(login: String): Option<List<StatisticRow>> {
+    override suspend fun getGrades(login: String): Either<String, List<StatisticRow>> {
         return try {
-            Option.fromNullable(database.statisticRowDao.getAllRowsForPerson(login).map {
+            database.statisticRowDao.getAllRowsForPerson(login).map {
                 it.asDomainModel()
-            })
+            }.right()
         } catch (e: Exception){
-            none()
+            e.message!!.left()
         }
     }
 

@@ -48,7 +48,7 @@ fun StatsContent(component: StatsComponent) {
                         .padding(scaffoldPadding)
                         .wrapContentSize(Alignment.Center)
                 ){
-                    Text("Ошибка")
+                    Text("Ошибка\nСообщение: ${(state as StatsStore.State.Error).message}")
                 }
             }
             is StatsStore.State.Idle -> {

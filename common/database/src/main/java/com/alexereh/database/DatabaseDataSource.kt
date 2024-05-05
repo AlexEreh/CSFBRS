@@ -1,5 +1,6 @@
 package com.alexereh.database
 
+import arrow.core.Either
 import arrow.core.Option
 import com.alexereh.model.PersonData
 import com.alexereh.model.StatisticRow
@@ -7,11 +8,11 @@ import com.alexereh.model.StatisticRow
 interface DatabaseDataSource {
     suspend fun getPerson(
         login: String,
-    ): Option<PersonData>
+    ): Either<String, PersonData>
 
     suspend fun getGrades(
         login: String,
-    ): Option<List<StatisticRow>>
+    ): Either<String, List<StatisticRow>>
 
     fun insertPerson(
         personData: PersonData,

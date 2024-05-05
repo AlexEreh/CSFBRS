@@ -19,14 +19,17 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--dontwarn org.bouncycastle.jsse.BCSSLParameters
--dontwarn org.bouncycastle.jsse.BCSSLSocket
--dontwarn org.bouncycastle.jsse.provider.BouncyCastleJsseProvider
--dontwarn org.conscrypt.Conscrypt$Version
--dontwarn org.conscrypt.Conscrypt
--dontwarn org.conscrypt.ConscryptHostnameVerifier
--dontwarn org.openjsse.javax.net.ssl.SSLParameters
--dontwarn org.openjsse.javax.net.ssl.SSLSocket
--dontwarn org.openjsse.net.ssl.OpenJSSE
-
--keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+-keep class com.gargoylesoftware.** { *; }
+-keep class javax.xml.** { *; }
+-keep class net.sourceforge.htmlunit.** { *; }
+-keep class netscape.** { *; }
+-keep class org.apache.** { *; }
+-keep class org.htmlunit.org.apache.** { *; }
+-keep class org.w3c.dom.** { *; }
+-keep class org.xml.sax.** { *; }
+-keepclassmembers class org.apache.http.** { *; }
+-keepclassmembers class io.ktor.** { *; }
+-keepclassmembers class kotlinx.** {
+    *;
+    volatile <fields>;
+}

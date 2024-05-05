@@ -74,7 +74,7 @@ internal class LoginStoreFactory(
                 dispatch(Msg.StartLogin)
                 val state = getState()
                 val person = repo.getPersonData(state.loginText, state.passwordText)
-                if (person.isNone()) {
+                if (person.isLeft()) {
                     return@launch
                 }
                 val userData = userData {

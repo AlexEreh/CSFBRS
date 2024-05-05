@@ -1,6 +1,7 @@
 package com.alexereh.grades
 
 import android.content.Context
+import arrow.core.Either
 import arrow.core.Option
 import com.alexereh.database.DatabaseDataSource
 import com.alexereh.grades.util.isNetworkAvailable
@@ -16,7 +17,7 @@ class GradesRepositoryImpl(
     private val databaseDataSource: DatabaseDataSource
 ) : GradesRepository {
 
-    override suspend fun getPersonData(login: String, password: String): Option<PersonData> {
+    override suspend fun getPersonData(login: String, password: String): Either<String, PersonData> {
         if (!isNetworkAvailable(context)) {
             return withContext(Dispatchers.IO) {
                 databaseDataSource.getPerson(login)
@@ -25,7 +26,7 @@ class GradesRepositoryImpl(
         val networkPerson = withContext(Dispatchers.IO) {
             networkDataSource.getPerson(login, password)
         }
-        if (networkPerson.isSome()) {
+        if (networkPerson.isRight()) {
             withContext(Dispatchers.IO){
                 databaseDataSource.insertPerson(
                     personData = networkPerson.getOrNull()!!,
@@ -38,7 +39,7 @@ class GradesRepositoryImpl(
         }
     }
 
-    override suspend fun getPersonRows(login: String, password: String): Option<List<StatisticRow>> {
+    override suspend fun getPersonRows(login: String, password: String): Either<String, List<StatisticRow>> {
         if (!isNetworkAvailable(context)) {
             val dbGrades = withContext(Dispatchers.IO) {
                 databaseDataSource.getGrades(login)
@@ -48,7 +49,7 @@ class GradesRepositoryImpl(
         val networkPerson = withContext(Dispatchers.IO) {
             networkDataSource.getPerson(login, password)
         }
-        if (networkPerson.isSome()) {
+        if (networkPerson.isRight()) {
             databaseDataSource.insertPerson(networkPerson.getOrNull()!!, login)
         }
         return withContext(Dispatchers.IO) {

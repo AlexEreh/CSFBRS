@@ -79,8 +79,8 @@ internal class ProfileStoreFactory(
                 }
                 val dataReal = data.getOrNull()!!
                 val personData = repo.getPersonData(dataReal.login, dataReal.password)
-                if (personData.isNone()) {
-                    dispatch(Msg.Error("Не удалось получить пользователя!"))
+                if (personData.isLeft()) {
+                    dispatch(Msg.Error("Не удалось получить пользователя!\nСообщение: ${personData.leftOrNull()!!}"))
                     return@launch
                 }
                 dispatch(Msg.Success(personData.getOrNull()!!))

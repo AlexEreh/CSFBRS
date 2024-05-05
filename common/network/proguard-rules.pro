@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.gargoylesoftware.** { *; }
+-keep class javax.xml.** { *; }
+-keep class net.sourceforge.htmlunit.** { *; }
+-keep class netscape.** { *; }
+-keep class org.apache.** { *; }
+-keep class org.htmlunit.org.apache.** { *; }
+-keep class org.w3c.dom.** { *; }
+-keep class org.xml.sax.** { *; }
